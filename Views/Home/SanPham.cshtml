@@ -1,0 +1,30 @@
+﻿@{ ViewData["Title"] = "Danh Mục"; }
+@model HasashinShop.Models.ViewModels.ProductsListViewModel
+<div class="row m-1 p-1">
+    <div class="tm-position-relative margin-bottom-30">
+        <nav class="tm-side-menu">
+            <h3 class="mb-3 h6 text-uppercase text-black d-block">Danh mục</h3>
+            <ul>
+                <vc:cosmetics-navigation />
+            </ul>
+        </nav>
+    </div>
+</div>
+@foreach (var p in Model.Products)
+{
+<div class="tm-popular-item">
+    <img src="@p.ImageProduct" alt="Popular" class="tm-popular-item-img">
+    <div class="tm-popular-item-description">
+        <h3 class="tm-handwriting-font tm-popular-item-title">@p.TenSP</h3>
+        @p.LoaiSP
+        <h4>@p.Gia.ToString("c")</h4>
+    </div>
+    <div class="card-body">
+        <partial name="CartTemplate" model="p" />
+    </div>
+</div>}
+
+<div page-model="@Model.PagingInfo" page-action="SanPham" page-classes-enabled="true"
+     page-class="btn border" page-class-normal="btn-outline-primary"
+     page-class-selected="btn-primary" page-url-genre="@Model.CurrentGenre" class="btn-group pull-right m-1 pl-4">
+</div>

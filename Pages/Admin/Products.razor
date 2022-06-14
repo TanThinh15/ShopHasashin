@@ -1,0 +1,72 @@
+﻿@page "/admin/product"
+@page "/admin"
+@inherits OwningComponentBase<IHasashinShopRepository>
+<table class="table table-sm table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên Sản Phẩm</th>
+            <th>Loại Sản Phẩm</th>
+            <th>Hình ảnh</th>
+            <th>Ngày Mua</th>
+            <th>Giá</th>
+            <td />
+        </tr>
+    </thead>
+    <tbody>
+        @if (ProductData?.Count() > 0)
+        {
+            @foreach (Product b in ProductData)
+            {
+        <tr>
+            <td>@b.ProductID</td>
+            <td>@b.TenSP</td>
+            <td>@b.LoaiSP</td>
+            <td><img src="@b.ImageProduct" alt="Popular" class="tm-popular-item-img"></td>
+            <td>@b.NgayMua</td>
+            <td>@b.Gia.ToString("c")</td>
+            <td>
+                <NavLink class="btn btn-info btn-sm"
+                         href="@GetDetailsUrl(b.ProductID)">
+                   Chi tiết
+                </NavLink>
+                <NavLink class="btn btn-warning btn-sm"
+                         href="@GetEditUrl(b.ProductID)">
+                   Sửa
+                </NavLink>
+                <button class="btn btn-danger btn-sm"
+                        @onclick="@(e => DeleteProduct(b))">
+                   Xóa
+                </button>
+            </td>
+        </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No Product</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<NavLink class="btn btn-primary" href="/admin/product/create">Nhập Sản Phẩm Mới</NavLink>
+@code {
+    public IHasashinShopRepository Repository => Service;
+    public IEnumerable<Product> ProductData { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+        await UpdateData();
+    }
+    public async Task UpdateData()
+    {
+        ProductData = await Repository.Products.ToListAsync();
+    }
+    public async Task DeleteProduct(Product b)
+    {
+        Repository.DeleteProduct(b);
+        await UpdateData();
+    }
+    public string GetDetailsUrl(long id) => $"/admin/product/details/{id}";
+    public string GetEditUrl(long id) => $"/admin/product/edit/{id}";
+}

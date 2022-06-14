@@ -1,0 +1,13 @@
+﻿@model Product
+@{ var format = System.Globalization.CultureInfo.GetCultureInfo("vi-VN"); }
+
+
+<form id="@Model.ProductID" asp-page="/MyCart" method="post">
+    <input type="hidden" asp-for="ProductID" />
+    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+    <h5 style="height: 5rem;">@Model.TenSP</h5>
+    <span class="card-text">@String.Format(format, "{0:c0}", Model.Gia)</span>
+    <button type="submit" onclick="AddToCartAlert()" class="btn btn-success float-right store-btn">
+        <i class="fas fa-shopping-cart"></i> Mua
+    </button>
+</form>

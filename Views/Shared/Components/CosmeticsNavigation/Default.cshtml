@@ -1,0 +1,10 @@
+﻿@model IEnumerable<string>
+@foreach (string cosmetics in Model)
+{
+<a class="text-decoration-none text-secondary
+    @(cosmetics == ViewBag.SelectedCosmetics ? "btn-white": "btn-outline-white")" style="display: flex; flex-direction: column"
+   asp-action="SanPham" asp-controller="Home"
+   asp-route-cosmetics="@cosmetics"
+   asp-route-ProductPage="1">
+    @cosmetics
+</a>}

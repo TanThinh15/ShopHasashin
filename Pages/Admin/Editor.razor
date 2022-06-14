@@ -1,0 +1,72 @@
+﻿@page "/admin/product/edit/{id:long}"
+@page "/admin/product/create"
+@inherits OwningComponentBase<IHasashinShopRepository>
+<style>
+    div.validation-message {
+        color: rgb(220, 53, 69);
+        font-weight: 500
+    }
+</style>
+<h3 class="bg-@ThemeColor text-white text-center p-1">@TitleText a Product</h3>
+<EditForm Model="Product" OnValidSubmit="SaveProduct">
+    <DataAnnotationsValidator />
+    @if (Product.ProductID != 0)
+    {
+        <div class="form-group">
+            <label>ID</label>
+            <input class="form-control" disabled value="@Product.ProductID" />
+        </div>
+    }
+    <div class="form-group">
+        <label>Tên Sản Phẩm</label>
+        <ValidationMessage For="@(() => Product.TenSP)" />
+        <InputText class="form-control" @bind-Value="Product.TenSP" />
+    </div>
+    <div class="form-group">
+        <label>Loại SP</label>
+        <ValidationMessage For="@(() => Product.LoaiSP)" />
+        <InputText class="form-control" @bind-Value="Product.LoaiSP" />
+    </div>
+    <div class="form-group">
+        <label>Ảnh SP</label>
+        <ValidationMessage For="@(() => Product.ImageProduct)" />
+        <InputText class="form-control" @bind-Value="Product.ImageProduct" />
+    </div>
+    <div class="form-group">
+        <label>Giá</label>
+        <ValidationMessage For="@(() => Product.Gia)" />
+        <InputNumber class="form-control" @bind-Value="Product.Gia" />
+    </div>
+    <button type="submit" class="btn btn-@ThemeColor">Save</button>
+    <NavLink class="btn btn-secondary"
+             href="/admin/product">Cancel</NavLink>
+</EditForm>
+@code {
+    public IHasashinShopRepository Repository => Service;
+    [Inject]
+    public NavigationManager NavManager { get; set; }
+    [Parameter]
+    public long Id { get; set; } = 0;
+    public Product Product { get; set; } = new Product();
+    protected override void OnParametersSet()
+    {
+        if (Id != 0)
+        {
+            Product = Repository.Products.FirstOrDefault(b => b.ProductID == Id);
+        }
+    }
+    public void SaveProduct()
+    {
+        if (Id == 0)
+        {
+            Repository.CreateProduct(Product);
+        }
+        else
+        {
+            Repository.SaveProduct(Product);
+        }
+        NavManager.NavigateTo("/admin/product");
+    }
+    public string ThemeColor => Id == 0 ? "primary" : "warning";
+    public string TitleText => Id == 0 ? "Create" : "Edit";
+}

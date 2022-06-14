@@ -1,0 +1,26 @@
+﻿@page "/admin/product/details/{id:long}"
+<h3 class="bg-info text-white text-center p-1">Details</h3>
+<table class="table table-sm table-bordered table-striped">
+    <tbody>
+        <tr><th>ID</th><td>@Product.ProductID</td></tr>
+        <tr><th>Tên Sản Phẩm</th><td>@Product.TenSP</td></tr>
+        <tr><th>Loại Sản Phẩm</th><td>@Product.LoaiSP</td></tr>
+        <tr><th>Ảnh SP</th><td>@Product.ImageProduct</td></tr>
+        <tr><th>Ngày Tạo</th><td>@Product.NgayMua</td></tr>
+        <tr><th>Gia</th><td>@Product.Gia.ToString("C")</td></tr>
+    </tbody>
+</table>
+<NavLink class="btn btn-warning" href="@EditUrl">Sửa</NavLink>
+<NavLink class="btn btn-secondary" href="/admin/product">Quay Lại</NavLink>
+@code {
+    [Inject]
+    public IHasashinShopRepository Repository { get; set; }
+    [Parameter]
+    public long Id { get; set; }
+    public Product Product { get; set; }
+    protected override void OnParametersSet()
+    {
+        Product = Repository.Products.FirstOrDefault(p => p.ProductID == Id);
+    }
+    public string EditUrl => $"/admin/product/edit/{Product.ProductID}";
+}

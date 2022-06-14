@@ -1,0 +1,52 @@
+﻿@page
+@model MyCartModel
+@{ var format = System.Globalization.CultureInfo.GetCultureInfo("vi-VN"); }
+
+<h2>Giỏ hàng</h2>
+<table class="table table-bordered">
+    <thead class="thead-light">
+        <tr>
+            <th>Hình ảnh</th>
+            <th>Số lượng</th>
+            <th>Sản phẩm</th>
+            <th class="text-right">Giá</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var line in Model.myCart.Lines)
+         {
+            <tr>
+                <td class="text-center"><img src="@line.Product.ImageProduct" asp-append-version="true" width="150" height="100" /></td>
+                <td class="text-center">@line.Quantity</td>
+                <td class="text-left">@line.Product.TenSP</td>
+                <td class="text-right">@String.Format(format, "{0:c0}", line.Product.Gia)</td>
+                <td class="text-center">
+                    <form asp-page-handler="Remove" method="post">
+                        <input type="hidden" name="ProductID"
+                               value="@line.Product.ProductID" />
+                        <input type="hidden" name="returnUrl"
+                               value="@Model.ReturnUrl" />
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            Remove
+                        </button>
+                    </form>
+                </td>
+            </tr>
+         }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-right">Tổng cộng: </td>
+            <td class="text-right">
+                @String.Format(format, "{0:c0}", Model.myCart.ComputeTotalValue())
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<div class="text-right">
+    <a class="btn btn-success" href="@Model.ReturnUrl"><i class='fas fa-arrow-left mr-2'></i>Quay lại</a>
+    <a class="btn btn-danger" asp-action="Checkout" asp-controller="Order">
+        Thanh toán<i class="fa fa-check ml-2"></i>
+    </a>
+</div>

@@ -17,6 +17,10 @@
 
 3. Phân trang
 ![Screenshot 2022-06-14 084007](https://user-images.githubusercontent.com/106048746/173475323-70cd8ce2-e30f-453e-a46d-dc3884e529b1.png)
+
+4.Thanh Toán
+![Screenshot 2022-06-14 091831](https://user-images.githubusercontent.com/106048746/173480337-47006319-7ca7-4912-8e96-a28e432656c8.png)
+
 # Các tính năng ở Admin Panel
 1. Thêm, xóa, sửa
 ![Screenshot 2022-06-14 084153](https://user-images.githubusercontent.com/106048746/173475601-e27cb667-9365-4bfc-a9a4-b4e6b5c20ec9.png)
